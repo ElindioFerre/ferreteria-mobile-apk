@@ -2,6 +2,7 @@ title: "El Indio Mobile"
 short_name: "IndioApp"
 description: "Consulta de precios offline para Ferreteria El Indio"
 theme_mode: system
+assets_dir: assets
 platforms:
   android:
     package_name: "com.ferreteria.elindio"

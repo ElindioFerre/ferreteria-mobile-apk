@@ -12,8 +12,9 @@ class MotorMobileLite:
         if directorio_base is None:
             directorio_base = os.path.dirname(os.path.abspath(__file__))
             
-        self.ruta_db = os.path.join(directorio_base, "base_datos_mobile.json")
-        self.ruta_margenes = os.path.join(directorio_base, "margenes.json")
+        # En Android Flet, los archivos sueltos se empaquetan mejor en assets
+        self.ruta_db = os.path.join(directorio_base, "assets", "base_datos_mobile.json")
+        self.ruta_margenes = os.path.join(directorio_base, "assets", "margenes.json")
         
         self.productos = []
         self.margenes = {}

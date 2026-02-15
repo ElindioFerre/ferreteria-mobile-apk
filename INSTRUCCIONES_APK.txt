@@ -1,0 +1,48 @@
+
+# COMO OBTENER TU APK DE ANDROID (FACIL)
+
+Para evitar instalar Android Studio y Flutter en tu PC (que pesan mas de 10GB), usaremos GitHub Actions.
+
+## PASO 1: Preparar los Archivos
+Asegurate de que en esta carpeta `ferreteria_mobile` tengas:
+1. `main_mobile.py` (Version Lite)
+2. `motor_mobile_lite.py`
+3. `base_datos_mobile.json` (Generado con `exportar_para_mobile.py`)
+4. `margenes.json` (Copiado automaticamentes)
+5. `requirements.txt` (Solo dice 'flet')
+6. `flet.yaml`
+
+El script de exportación YA generó los puntos 3 y 4 por ti.
+
+## PASO 2: Subir a GitHub
+Tienes dos opciones:
+
+### OPCION A: Crear un Nuevo Repositorio SOLO para Mobile (Recomendado)
+1. Crea un nuevo repositorio en GitHub llamado "ferreteria-app".
+2. Sube TODO el contenido de la carpeta `ferreteria_mobile` a la raiz de ese repo.
+   - OJO: El archivo `.github/workflows/build_apk.yml` DEBE quedar en `.github/workflows/build_apk.yml` dentro del repo.
+3. Haz `git push`.
+
+### OPCION B: Subir todo tu proyecto actual
+1. Si subes todo (`ferreteria_precios`, `ferreteria_mobile`, etc), asegurate de que el archivo `.github/workflows/build_apk.yml` esté en la raiz del repo, bajo la carpeta `.github`.
+   - El script que hice ya intenta detectar si existe la carpeta `ferreteria_mobile` y entrar en ella.
+
+## PASO 3: Esperar el APK
+1. Ve a tu repositorio en GitHub.
+2. Clic en la pestaña **"Actions"**.
+3. Verás un workflow llamado "Build Android APK" ejecutandose (color amarillo).
+4. Espera a que termine (verde). Puede tardar 5-8 minutos la primera vez.
+5. Haz clic en el workflow completado y abajo, en **"Artifacts"**, descarga `app-release.apk`.
+
+## PASO 4: Instalar
+1. Pásate el archivo .apk al celular (por WhatsApp o cable).
+2. Instálalo (te pedirá permiso de fuentes desconocidas).
+3. ¡Listo! Tendrás la app con tus 28,000 productos funcionando offline.
+
+## NOTA IMPORTANTE SOBRE ACTUALIZACIONES
+Cuando cambies precios en tu PC:
+1. Corre `python exportar_para_mobile.py` en tu PC.
+2. Esto actualizará `base_datos_mobile.json`.
+3. Haz `git commit` y `git push` de ese archivo json.
+4. GitHub volverá a compilar el APK con los precios nuevos.
+5. (A futuro, podemos hacer que la App descargue el JSON de internet sin reinstalar el APK, pero eso es Fase 2).

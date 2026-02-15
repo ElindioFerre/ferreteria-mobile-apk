@@ -1,0 +1,10 @@
+title: "El Indio Mobile"
+short_name: "IndioApp"
+description: "Consulta de precios offline para Ferreteria El Indio"
+theme_mode: system
+platforms:
+  android:
+    package_name: "com.ferreteria.elindio"
+    label: "El Indio"
+    permissions:
+      - internet  # Aunque sea offline, flutter a veces lo pide

@@ -1,0 +1,42 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install flet packaging virtualenv
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0"
+          channel: 'stable'
+      
+      - name: Create Flet Build Inputs
+        # Si ferreteria_mobile es un subdirectorio, entramos. Si no, ejecutamos en .
+        run: |
+          if [ -d "ferreteria_mobile" ]; then
+            cd ferreteria_mobile
+          fi
+          flet build apk --verbose
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.apk
+          path: build/apk/app-release.apk 

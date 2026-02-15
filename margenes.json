@@ -1,0 +1,57 @@
+{
+    "margenes_por_proveedor": {
+        "ListaPrecios (1)": 30.0,
+        "Indices Unificados de PreciosXRegion Julio-14": 20.0,
+        "Lista Precios -  2025": 30.0,
+        "LISTA DE PRECIOS FERRETERA OESTE - GENERAL.xls - Hoja1": 30.0,
+        "lista-de-precios-de-ferreteria-pdf": 30.0,
+        "lista-de-precios-en-excel": 30.0,
+        "Distri-sal L1 (09022026) v69": {
+            "margen": 50.0,
+            "desc1": 13.5,
+            "desc2": 0.0
+        },
+        "SAN JORGE (GENERAL)": 50.0,
+        "SANITARIOS PLASTIFER (GENERAL -38-)": {
+            "margen": 50.0,
+            "desc1": 38.0,
+            "desc2": 0.0
+        },
+        "GUILLER (GENERAL)": 50.0,
+        "DISTRIBUIDORA MARTÍN (GENERAL)": 50.0,
+        "EDEZKA (GENERAL -44-)": {
+            "margen": 65.0,
+            "desc1": 44.0,
+            "desc2": 0.0
+        },
+        "DISTRIBUIDORA R.L.A. (GENERAL)": 50.0,
+        "NICO (GENERAL)": 50.0,
+        "DISTRIBUIDORA DEL OESTE (BREMEN)": 50.0,
+        "DISTRIWEB (DYLLU -15- & -15-)": {
+            "margen": 50.0,
+            "desc1": 15.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (TOTAL -10- & -15-) (1)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIBUIDORA C.O. (GENERAL)": 50.0,
+        "DISTRIBUIDORA PERLITA (GENERAL)": 50.0,
+        "DFA (GENERAL)": 50.0,
+        "DISTRIWEB (TEKBOND -10- & -15-)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (GENERAL -10- & -15-)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        }
+    },
+    "margen_default": 20,
+    "moneda": "ARS",
+    "umbral_busqueda_fuzzy": 60
+}

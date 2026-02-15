@@ -1,0 +1,24 @@
+{
+    "activos": [],
+    "historial": [
+        {
+            "id": "0dbafc29-6186-4dce-9708-ba66ec1d28f0",
+            "cliente": "El peruano molesto ese",
+            "referencia": "Vecino",
+            "telefono": "1127752423",
+            "fecha": "2026-02-12 10:03",
+            "nota": "Es down",
+            "items": [
+                {
+                    "codigo": "A0232",
+                    "producto": "ABRAZADERA TORNILLO Y TUERCA 9 mm - 11 - 13",
+                    "cantidad": 1,
+                    "precio": 449.47,
+                    "subtotal": 449.47
+                }
+            ],
+            "total": 449.47,
+            "fecha_pago": "2026-02-12 15:42"
+        }
+    ]
+}

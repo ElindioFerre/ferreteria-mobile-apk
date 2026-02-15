@@ -49,6 +49,13 @@
             "margen": 50.0,
             "desc1": 10.0,
             "desc2": 15.0
+        },
+        "SANITARIOS MAXI (GENERAL -48%)": 50.0,
+        "EDEZKA (GENERAL -44%)": 50.0,
+        "ALUZAR (BORNES-ORINGS-ETC -61,9%)": {
+            "margen": 50.0,
+            "desc1": 62.0,
+            "desc2": 0.0
         }
     },
     "margen_default": 20,

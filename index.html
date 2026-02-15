@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ferretería El Indio</title>
+    <style>
+        :root {
+            --bg: #0F111A;
+            --card: #1A1C26;
+            --primary: #6C5CE7;
+            --accent: #00CEC9;
+            --text-high: #FFFFFF;
+            --text-low: #A0A3BD;
+            --border: #2D2F4E;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text-high);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Header */
+        header {
+            background-color: var(--card);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            flex: 1;
+            color: var(--accent);
+        }
+        #status {
+            font-size: 0.8rem;
+            color: var(--text-low);
+        }
+
+        /* Buscador */
+        #search-container {
+            padding: 15px;
+            background-color: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background-color: var(--card);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.3);
+        }
+
+        /* Lista */
+        #results {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 15px 15px 15px;
+        }
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: transform 0.1s;
+        }
+        .card:active {
+            transform: scale(0.98);
+            background-color: #252836;
+        }
+        .prod-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        .prod-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-low);
+        }
+        .prod-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-low);
+        }
+
+        /* Utils */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔧 El Indio</h1>
+    <span id="status">Iniciando...</span>
+</header>
+
+<div id="search-container">
+    <input type="text" id="busqueda" placeholder="Buscar producto..." autocomplete="off">
+</div>
+
+<div id="results">
+    <div id="msg-inicial" class="loading">Cargando base de datos...</div>
+</div>
+
+<script>
+    // --- Lógica del Motor ---
+    let PRODUCTOS = [];
+    let MARGENES = {};
+    let MARGEN_DEFAULT = 30;
+
+    const elStatus = document.getElementById('status');
+    const elInput = document.getElementById('busqueda');
+    const elResults = document.getElementById('results');
+    const elMsg = document.getElementById('msg-inicial');
+
+    // 1. Cargar Datos
+    async function init() {
+        try {
+            elMsg.innerText = "Descargando precios...";
+            
+            // Cargar Margenes
+            try {
+                const resM = await fetch('assets/margenes.json');
+                const dataM = await resM.json();
+                MARGENES = dataM.margenes_por_proveedor || {};
+                MARGEN_DEFAULT = dataM.margen_default || 30;
+            } catch (e) {
+                console.warn("No se pudo cargar margenes", e);
+            }
+
+            // Cargar Productos
+            const resP = await fetch('assets/base_datos_mobile.json');
+            if (!resP.ok) throw new Error("No se encontró el archivo de datos");
+            
+            PRODUCTOS = await resP.json();
+            
+            elMsg.innerText = `✅ ${PRODUCTOS.length} productos listos.`;
+            elStatus.innerText = "Offline ready";
+            elInput.focus();
+
+        } catch (e) {
+            elMsg.innerText = "❌ Error: " + e.message;
+            elStatus.innerText = "Error";
+            console.error(e);
+        }
+    }
+
+    // 2. Buscador
+    elInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (query.length < 2) {
+            render([]);
+            if (query.length === 0) elResults.innerHTML = '<div class="loading">Escribe para buscar...</div>';
+            return;
+        }
+        search(query);
+    });
+
+    function search(query) {
+        // Buscador simple (limite 50 para velocidad)
+        const limit = 50;
+        const results = [];
+        
+        for (let i = 0; i < PRODUCTOS.length; i++) {
+            const p = PRODUCTOS[i];
+            const txt = (p.producto + " " + (p.codigo || "") + " " + p.proveedor).toLowerCase();
+            
+            if (txt.includes(query)) {
+                // Calcular Precio al vuelo
+                p.precio_final = calcularPrecio(p);
+                results.push(p);
+                if (results.length >= limit) break;
+            }
+        }
+        render(results);
+    }
+
+    function calcularPrecio(item) {
+        const prov = item.proveedor;
+        const costo = item.precio_costo;
+        
+        let margen = MARGEN_DEFAULT;
+        let d1 = 0, d2 = 0;
+
+        if (MARGENES[prov]) {
+            const m = MARGENES[prov];
+            // Puede ser objeto o numero
+            if (typeof m === 'object') {
+                margen = m.margen || 0;
+                d1 = m.desc1 || 0;
+                d2 = m.desc2 || 0;
+            } else {
+                margen = m;
+            }
+        }
+
+        let neto = costo;
+        if (d1 > 0) neto = neto * (1 - d1/100);
+        if (d2 > 0) neto = neto * (1 - d2/100);
+        
+        const final = neto * (1 + margen/100);
+        return final;
+    }
+
+    function render(list) {
+        elResults.innerHTML = "";
+        if (list.length === 0) {
+            // No borrar mensaje inicial si es borrado
+            return; 
+        }
+
+        list.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `
+                <div class="prod-name">${p.producto}</div>
+                <div class="prod-meta">
+                    <span>${p.proveedor} ${p.codigo ? "| " + p.codigo : ""}</span>
+                    <span class="prod-price">$${p.precio_final.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                </div>
+            `;
+            elResults.appendChild(div);
+        });
+    }
+
+    // Iniciar
+    init();
+
+</script>
+</body>
+</html>

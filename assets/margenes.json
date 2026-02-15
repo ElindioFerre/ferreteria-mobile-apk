@@ -51,14 +51,102 @@
             "desc2": 15.0
         },
         "SANITARIOS MAXI (GENERAL -48%)": 50.0,
-        "EDEZKA (GENERAL -44%)": 50.0,
+        "EDEZKA (GENERAL -44%)": {
+            "margen": 50.0,
+            "desc1": 44.0,
+            "desc2": 0.0
+        },
         "ALUZAR (BORNES-ORINGS-ETC -61,9%)": {
             "margen": 50.0,
             "desc1": 62.0,
             "desc2": 0.0
-        }
+        },
+        "ALUZAR (BISAGRAS)": 50.0,
+        "ALUZAR (BULONES)": 50.0,
+        "ALUZAR (EL GALGO)": 50.0,
+        "ALUZAR (GENERAL)": 50.0,
+        "ALUZAR (REMACHES)": 50.0,
+        "ALUZAR (TRAMONTINA)": 50.0,
+        "CATALOGO_EL_TALLER": 50.0,
+        "DFA (HAMILTON -36% & -20%)": {
+            "margen": 50.0,
+            "desc1": 36.0,
+            "desc2": 20.0
+        },
+        "DFA (LATYNPLAST & VALFORTE -30%)": {
+            "margen": 50.0,
+            "desc1": 30.0,
+            "desc2": 0.0
+        },
+        "DFA (RIEGO Y PILETA)": 50.0,
+        "DISTRI-SAL (GENERAL -13,5%)": {
+            "margen": 50.0,
+            "desc1": 13.5,
+            "desc2": 0.0
+        },
+        "DISTRIBUIDORA PERLITA (TIRAFONDOS)": 50.0,
+        "DISTRIBUIDORA R.L.A. (GENERAL) (1)": 50.0,
+        "DISTRIWEB (DYLLU -15% & -15%)": {
+            "margen": 50.0,
+            "desc1": 15.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (GLADIATOR -10% & -15%)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (MOTA -10% & -15%)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (PRODUCTOS JH - 10% & -15%)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (RIEGO -10% & -15%)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (TEKBOND -10% & -15%)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "DISTRIWEB (TOTAL -10% & -15%)": {
+            "margen": 50.0,
+            "desc1": 10.0,
+            "desc2": 15.0
+        },
+        "EDEZKA (GENERAL)": 50.0,
+        "EL TALLER (MAQUINAS)": 50.0,
+        "EL TALLER (TORNILLOS)": 50.0,
+        "ELECTROMARTINS (GENERAL L2)": 50.0,
+        "HERELED (GENERAL -20%)": {
+            "margen": 50.0,
+            "desc1": 20.0,
+            "desc2": 0.0
+        },
+        "LE CARD CARBONES (GENERAL)": 50.0,
+        "LUMIPLAST (GENERAL)": 50.0,
+        "MACAR (GENERAL)": 50.0,
+        "MACIMAR (GENERAL -20% & -10%)": {
+            "margen": 50.0,
+            "desc1": 20.0,
+            "desc2": 10.0
+        },
+        "NAON (GENERAL)": 50.0,
+        "NICAAR (GENERAL)": 50.0,
+        "OVEJERO ALEMÁN (BREMEN)": 50.0,
+        "ROTTWEILER (GENERAL $1000USD)": 50.0,
+        "SANITARIOS FÉNIX (GENERAL)": 50.0,
+        "SANITARIOS MITRE (GENERAL)": 50.0
     },
     "margen_default": 20,
     "moneda": "ARS",
-    "umbral_busqueda_fuzzy": 60
+    "umbral_busqueda_fuzzy": 60,
+    "drive_folder_id": "1uSTENezxvEhbxqYs-LiiGfZ6QPkVpdlP"
 }

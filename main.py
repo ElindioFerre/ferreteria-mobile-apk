@@ -30,20 +30,45 @@ class FerreteriaMobileApp:
         self.page.bgcolor = AppColors.BG_PRINCIPAL
         self.page.padding = 0
         
-        # Inicializar Motor
-        # En APK, los assets se empaquetan en la raiz o en 'assets'
-        # Flet en Android monta los assets en un path especial.
-        # Por simplicidad, intentamos leer desde el directorio actual primero.
-        self.motor = MotorMobileLite(os.getcwd())
         
-        if not self.motor.productos:
-            # Intentar buscar en assets si estamos empaquetados
-            # Hack: Flet a veces cambia el CWD en mobile.
-            pass
+        # --- ESTADO INICIAL ---
+        self.loading = ft.ProgressRing(visible=True)
+        self.msg_error = ft.Text("", color="red", size=14, visible=False)
+        self.motor = None
 
-        self.setup_ui()
+        self.setup_ui_base()
+        
+        # Cargar datos async para no freezar la UI
+        # Flet corre en hilos.
+        try:
+             self.cargar_datos()
+        except Exception as e:
+             self.mostrar_error(f"Error critico al iniciar: {e}")
 
-    def setup_ui(self):
+    def cargar_datos(self):
+        try:
+            # Usar ruta relativa al script, no CWD
+            self.motor = MotorMobileLite()
+            total = len(self.motor.productos)
+            
+            if total == 0:
+                self.mostrar_error("No se encontraron productos en base_datos_mobile.json")
+            else:
+                self.info_text.value = f"{total} productos cargados offline"
+                self.info_text.update()
+                self.loading.visible = False
+                self.loading.update()
+                
+        except Exception as e:
+            self.mostrar_error(f"Error cargando DB: {e}")
+
+    def mostrar_error(self, msg):
+        self.msg_error.value = str(msg)
+        self.msg_error.visible = True
+        self.loading.visible = False
+        self.page.update()
+
+    def setup_ui_base(self):
         self.page.controls.clear()
         
         # --- HEADER ---

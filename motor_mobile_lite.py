@@ -7,7 +7,11 @@ class MotorMobileLite:
     Motor ligero para Android/iOS.
     No usa pandas ni java. Lee una DB pre-procesada en JSON.
     """
-    def __init__(self, directorio_base="."):
+    def __init__(self, directorio_base=None):
+        # Si no nos dan directorio, usamos el directorio donde esta ESTE script
+        if directorio_base is None:
+            directorio_base = os.path.dirname(os.path.abspath(__file__))
+            
         self.ruta_db = os.path.join(directorio_base, "base_datos_mobile.json")
         self.ruta_margenes = os.path.join(directorio_base, "margenes.json")
         

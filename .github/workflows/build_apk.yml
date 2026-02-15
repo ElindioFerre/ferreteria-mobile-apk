@@ -10,10 +10,10 @@ jobs:
     name: Build APK
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.19.0"
+          flutter-version: "3.24.0"
           channel: 'stable'
       
       - name: Create Flet Build Inputs
@@ -36,7 +36,7 @@ jobs:
           flet build apk --verbose
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
           path: build/apk/app-release.apk 

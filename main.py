@@ -30,42 +30,71 @@ class FerreteriaMobileApp:
         self.page.bgcolor = AppColors.BG_PRINCIPAL
         self.page.padding = 0
         
-        
         # --- ESTADO INICIAL ---
         self.loading = ft.ProgressRing(visible=True)
+        self.msg_estado = ft.Text("Iniciando...", color="white", size=14)
         self.msg_error = ft.Text("", color="red", size=14, visible=False)
         self.motor = None
 
         self.setup_ui_base()
         
-        # Cargar datos async para no freezar la UI
-        # Flet corre en hilos.
-        try:
-             self.cargar_datos()
-        except Exception as e:
-             self.mostrar_error(f"Error critico al iniciar: {e}")
+        # Cargar datos en UN HILO SEPARADO para que la UI se dibuje primero
+        import threading
+        hilo = threading.Thread(target=self.cargar_datos_thread)
+        hilo.start()
 
-    def cargar_datos(self):
+    def log(self, msj):
+        print(msj)
+        self.msg_estado.value = msj
+        self.msg_estado.update()
+
+    def cargar_datos_thread(self):
+        import time
+        time.sleep(0.5) # Dar tiempo a que la UI aparezca
+        
         try:
-            # Usar ruta relativa al script, no CWD
+            self.log("Instanciando motor...")
             self.motor = MotorMobileLite()
-            total = len(self.motor.productos)
             
+            # Verificar ruta
+            self.log(f"Buscando en: {self.motor.ruta_db}")
+            
+            if not os.path.exists(self.motor.ruta_db):
+                 self.log("ERROR: No encuentro el archivo .json")
+                 # Intentar buscar en root por si acaso
+                 if os.path.exists("base_datos_mobile.json"):
+                     self.log("Encontrado en raiz! Reintentando...")
+                     self.motor.ruta_db = "base_datos_mobile.json"
+                     self.motor._cargar_datos()
+                 else:
+                     raise FileNotFoundError(f"No existe {self.motor.ruta_db}")
+            
+            self.log("Leyendo archivo JSON (puede tardar)...")
+            # Forzar recarga si no cargo en init
+            if not self.motor.productos:
+                self.motor._cargar_datos()
+
+            total = len(self.motor.productos)
             if total == 0:
-                self.mostrar_error("No se encontraron productos en base_datos_mobile.json")
+                self.mostrar_error("El JSON esta vacio o corrupto.")
             else:
+                self.log(f"¡Exito! {total} productos.")
+                time.sleep(0.5)
                 self.info_text.value = f"{total} productos cargados offline"
                 self.info_text.update()
                 self.loading.visible = False
+                self.msg_estado.visible = False
                 self.loading.update()
+                self.msg_estado.update()
                 
         except Exception as e:
-            self.mostrar_error(f"Error cargando DB: {e}")
+            self.mostrar_error(f"Error critico: {e}")
 
     def mostrar_error(self, msg):
         self.msg_error.value = str(msg)
         self.msg_error.visible = True
         self.loading.visible = False
+        self.msg_estado.visible = False
         self.page.update()
 
     def setup_ui_base(self):
